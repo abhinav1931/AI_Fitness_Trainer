@@ -1,2 +1,2 @@
 langchain-chroma
-
+langchain-ollama
