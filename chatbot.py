@@ -38,7 +38,7 @@ retriever = vectorstore.as_retriever(
 # -----------------------------
 
 llm = ChatOllama(
-    model="llama3.2:3b",
+    model="gpt-oss:20b",
     temperature=0,
     base_url="https://ollama.com",
     client_kwargs={
