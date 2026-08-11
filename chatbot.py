@@ -1,44 +1,27 @@
 import os
-import streamlit as st
 
 from langchain_chroma import Chroma
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 
 
-# --------------------------------
-# Ollama Cloud API Key
-# --------------------------------
-
-OLLAMA_API_KEY = st.secrets["OLLAMA_API_KEY"]
-
-os.environ["OLLAMA_API_KEY"] = OLLAMA_API_KEY
-
-
-# --------------------------------
-# Ollama Cloud Authentication
-# --------------------------------
-
-client_kwargs = {
-    "headers": {
-        "Authorization": f"Bearer {OLLAMA_API_KEY}"
-    }
-}
-
-
-# --------------------------------
+# -----------------------------
 # Load Embeddings
-# --------------------------------
+# -----------------------------
 
 embeddings = OllamaEmbeddings(
     model="nomic-embed-text",
     base_url="https://ollama.com",
-    client_kwargs=client_kwargs
+    client_kwargs={
+        "headers": {
+            "Authorization": f"Bearer {os.getenv('OLLAMA_API_KEY')}"
+        }
+    }
 )
 
 
-# --------------------------------
+# -----------------------------
 # Load Vector Database
-# --------------------------------
+# -----------------------------
 
 vectorstore = Chroma(
     persist_directory="vectorstore",
@@ -50,21 +33,25 @@ retriever = vectorstore.as_retriever(
 )
 
 
-# --------------------------------
+# -----------------------------
 # Load LLM
-# --------------------------------
+# -----------------------------
 
 llm = ChatOllama(
-    model="gpt-oss:20b",
+    model="llama3.2:3b",
     temperature=0,
     base_url="https://ollama.com",
-    client_kwargs=client_kwargs
+    client_kwargs={
+        "headers": {
+            "Authorization": f"Bearer {os.getenv('OLLAMA_API_KEY')}"
+        }
+    }
 )
 
 
-# --------------------------------
+# -----------------------------
 # AI Function
-# --------------------------------
+# -----------------------------
 
 def ask_ai(question):
 
