@@ -29,8 +29,6 @@ muscle = st.selectbox(
         "Shoulders",
         "Arms",
         "Legs",
-        "Core",
-        "Full Body"
     ]
 )
 
